@@ -287,7 +287,7 @@ class Tooltip {
       Data.setData(tip, this.constructor.DATA_KEY, this)
 
       if (!this.element.ownerDocument.documentElement.contains(this.tip)) {
-        container.appendChild(tip)
+        container.append(tip)
       }
 
       EventHandler.trigger(this.element, this.constructor.Event.INSERTED)
@@ -335,7 +335,7 @@ class Tooltip {
     const tip = this.getTipElement()
     const complete = () => {
       if (this._hoverState !== HOVER_STATE_SHOW && tip.parentNode) {
-        tip.parentNode.removeChild(tip)
+        tip.remove()
       }
 
       this._cleanTipClass()
@@ -419,10 +419,10 @@ class Tooltip {
       if (this.config.html) {
         if (content.parentNode !== element) {
           element.innerHTML = ''
-          element.appendChild(content)
+          element.append(content)
         }
       } else {
-        element.innerText = content.textContent
+        element.textContent = content.textContent
       }
 
       return
@@ -435,7 +435,7 @@ class Tooltip {
 
       element.innerHTML = content
     } else {
-      element.innerText = content
+      element.textContent = content
     }
   }
 
@@ -578,10 +578,7 @@ class Tooltip {
     const titleType = typeof this.element.getAttribute('data-original-title')
 
     if (this.element.getAttribute('title') || titleType !== 'string') {
-      this.element.setAttribute(
-        'data-original-title',
-        this.element.getAttribute('title') || ''
-      )
+      this.element.dataset.originalTitle = this.element.getAttribute('title') || ''
 
       this.element.setAttribute('title', '')
     }
@@ -680,7 +677,7 @@ class Tooltip {
 
     Object.keys(dataAttributes)
       .forEach(dataAttr => {
-        if (DISALLOWED_ATTRIBUTES.indexOf(dataAttr) !== -1) {
+        if (DISALLOWED_ATTRIBUTES.includes(dataAttr)) {
           delete dataAttributes[dataAttr]
         }
       })
